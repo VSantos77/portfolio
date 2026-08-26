@@ -13,11 +13,10 @@ export const profile = {
 
 // Tu presentación. Reemplazá el texto entre comillas por 2-3 líneas propias.
 export const intro =
-  "Hola, soy Santi! Hace más de 5 años que trabajo en Data, transformando problemas\
-  de negocio en soluciones de datos robustas y accionables. Trabajé en ámbitos diversos como Ecommerce,\
-  Prevencion de Fraude y Comercio Exterior. Actualmente me desempeño como Analytics Engineer en Passport\
-  Global."
-  ;
+"Hola, soy Santi! Hace +5 años que construyo los pipelines y dashboards que las áreas de negocio usan para tomar decisiones.\
+Me encanta tomar un problema ambiguo y convertirlo en un modelo de datos confiable. \
+Hoy busco roles de Analytics / Data Engineer donde poder contribuir a construir arquitecturas de datos con impacto."
+;
 
 export type SkillGroup = {
   label: string;
