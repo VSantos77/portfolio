@@ -4,19 +4,21 @@
 export const profile = {
   name: "Santiago Villaverde",
   eyebrow: "",
-  role: "Analytics Engineer | Ecommerce & Fraud Prevention",
+  roleHighlight: "Analytics Engineer",
+  roleRest: "Ecommerce & Fraud Prevention",
   location: "Buenos Aires, Argentina",
   email: "santiago.villaverde07@gmail.com",
   linkedin: "https://linkedin.com/in/svillaverde",
   github: "https://github.com/VSantos77",
 };
 
-// Tu presentación. Reemplazá el texto entre comillas por 2-3 líneas propias.
-export const intro =
-"Hola, soy Santi! Hace +5 años que construyo los pipelines y dashboards que las áreas de negocio usan para tomar decisiones.\
-Me encanta tomar un problema ambiguo y convertirlo en un modelo de datos confiable. \
-Hoy busco roles de Analytics / Data Engineer donde poder contribuir a construir arquitecturas de datos con impacto."
-;
+// Tu presentación. Cada elemento del array es un párrafo separado; agregá más para partir el texto.
+// Envolvé texto en <mark>...</mark> para resaltarlo en color accent.
+export const intro = [
+  "Hola!",
+  "Me llamo Santi. Hace más de 5 años que construyo los <mark>pipelines y dashboards que potencian decisiones de negocio</mark>. Me apasiona tomar un problema ambiguo y convertirlo en un modelo de datos confiable.",
+  "Hoy en día busco roles de Analytics / Data Engineer donde poder <mark>contribuir a construir arquitecturas de datos con impacto.</mark>"
+];
 
 export type SkillGroup = {
   label: string;
@@ -26,16 +28,20 @@ export type SkillGroup = {
 
 export const skillGroups: SkillGroup[] = [
   {
-    label: "Datos & modelado",
-    items: ["SQL (avanzado)", "dbt", "Python · Pandas", "Snowflake"],
+    label: "Transformacion de datos",
+    items: ["SQL", "Python", "dbt", "Pandas"],
   },
   {
     label: "BI & visualización",
     items: ["Tableau", "Power BI", "Looker Studio", "Streamlit"],
   },
   {
-    label: "Infraestructura",
-    items: ["GCP", "Terraform", "Git · CI/CD"],
+    label: "Cloud e Infraestructura",
+    items: ["GCP", "Snowflake", "Terraform"],
+  },
+  {
+    label: "Versionado y CI/CD",
+    items: ["Git", "Github Actions"]
   },
   {
     label: "Idiomas",
@@ -54,18 +60,18 @@ export type Job = {
   company: string;
   role: string;
   date: string;
-  paragraphs: string[];
-  chart?: MiniChart; // opcional: solo el job de Mercado Libre lo usa
+  paragraphs: string[]; // cada string es un bullet; envolvé texto en <mark>...</mark> para resaltarlo en color accent
+  chart?: MiniChart; // opcional: para destacar un dato antes/después
 };
 
 export const experience: Job[] = [
   {
     company: "Passport Global",
-    role: "SSr Analytics Engineer - Data",
+    role: "Analytics Engineer",
     date: "DIC 2024 - PRESENTE",
     paragraphs: [
-      "Dueño end-to-end de las herramientas de BI (Tableau, Streamlit) para Growth y Customer Success, desde el relevamiento hasta el modelado en dbt.",
-      "Construí el dashboard de churn (efectivo vs. potencial) que reemplazó los cálculos manuales de Business Operations; hoy se usa trimestralmente en los offsites de la compañía.",
+      "<mark>Centralicé la lógica de negocio de churn y revenue</mark> en modelos de datos gobernados en dbt, convirtiéndolos en la fuente única de verdad para los reportes de Customer Success y Business Operations.",
+      "Desarrollé el monitor de Churn (dbt + Tableau) que reemplazó los cálculos manuales; hoy <mark>es usado trimestralmente para evaluar performance y setear objetivos.</mark>",
     ],
   },
   {
@@ -73,20 +79,16 @@ export const experience: Job[] = [
     role: "Fraud Prevention Data Analyst",
     date: "MAY 2023 - DIC 2024",
     paragraphs: [
-      "Detecté, fuera de mi scope directo, un bug de validación antifraude que crecía sostenidamente. Escalé la causa raíz a IT y validé el fix en producción.",
+      "Diseñé el <mark>monitor de chargebacks</mark> (Tableau), con breakdowns dinámicos por país, canal de pago y banco emisor; <mark>se usa a diario para detectar y diagnosticar incidentes.</mark>",
+      "Detecté, fuera de mi scope directo, un bug en el proceso de detección de fraude. Lideré el fix junto a IT, confirmando la causa raíz y validando la corrección en producción, <mark>evitando ~$1M USD en pérdidas anuales proyectadas.</mark>",
     ],
-    chart: {
-      before: { value: "20%", label: "pico", heightPx: 64 },
-      after: { value: "1-2%", label: "post-fix", heightPx: 8 },
-      note: "Tasa de falsos negativos antes / después de la corrección",
-    },
   },
   {
-    company: "AAICI",
+    company: "Agencia Argentina de Inversiones y Comercio Internacional",
     role: "Data Analyst - Business Intelligence",
     date: "ABR 2022 - ABR 2023",
     paragraphs: [
-      "Lideré un pipeline en Python + Scrapy que automatizó el reporting de indicadores comerciales, reemplazando un proveedor externo (~$50k/año evitados).",
+      "Construí desde cero un pipeline en Python + Scrapy que convierte datos crudos en indicadores comerciales accionables (IMA/IOC), presentados en reportes interactivos en Power BI; reemplazó la necesidad de un proveedor externo <mark>resultando en un ahorro de ~$50k USD/año</mark>",
     ],
   },
 ];
@@ -100,30 +102,12 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    title: "Discount Tracker",
+    title: "Catalogo de Descuentos",
     description:
-      "Pipeline ELT propio (Scrapy → GCS → BigQuery → dbt) con arquitectura medallion, que consolida descuentos bancarios para identificar el mejor por comercio y período.",
+      "Pipeline ELT propio (Scrapy → GCS → BigQuery → dbt) con arquitectura medallion, que consolida descuentos de bancos y programas de membresía en Argentina para encontrar el mejor por comercio y período.",
     tags: ["dbt", "BigQuery", "Terraform", "Cloud Run"],
     link: { label: "github ↗", url: "https://github.com/VSantos77/discount-tracker" },
-  },
-  {
-    title: "Churn Dashboard",
-    description:
-      "Modelo dbt que centraliza la lógica de negocio de churn efectivo y potencial, con tests de calidad, usado trimestralmente en decisiones de la compañía.",
-    tags: ["dbt", "Tableau", "SQL"],
-  },
-  {
-    title: "Cost Comparison App",
-    description:
-      "App en Streamlit que le permite a Sales generar análisis de costos self-service, eliminando ~30 hs/mes de trabajo manual del equipo de Data.",
-    tags: ["Streamlit", "Python", "Google Sheets API"],
-  },
-  {
-    title: "Shipping Intelligence Portal",
-    description:
-      "App multi-cliente en Streamlit embebida en el portal externo, con row-level security y autenticación JWT para aislar datos por cliente.",
-    tags: ["Streamlit", "Snowflake", "JWT"],
-  },
+  }
 ];
 
 export const contactHeadline = "¿Hablamos de tu próximo proyecto de datos?";

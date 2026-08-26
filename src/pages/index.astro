@@ -11,6 +11,7 @@ import {
 } from "../data/content.ts";
 
 const title = `${profile.name} — Analytics Engineer`;
+const showContact = false; // apagado por ahora; poné true para volver a mostrar la sección de Contacto
 ---
 <!DOCTYPE html>
 <html lang="es">
@@ -32,20 +33,29 @@ const title = `${profile.name} — Analytics Engineer`;
       <div>
         <span class="eyebrow">{profile.eyebrow}</span>
         <h1>{profile.name}</h1>
-        <p class="role">{profile.role}</p>
+        <p class="role"><span class="role-highlight">{profile.roleHighlight}</span> | {profile.roleRest}</p>
+        <p class="hero-loc">{profile.location}</p>
       </div>
       <div class="hero-links">
-        <a href={`mailto:${profile.email}`}>email</a>
-        <a href={profile.linkedin} target="_blank" rel="noopener">linkedin</a>
-        <a href={profile.github} target="_blank" rel="noopener">github</a>
+        <a href={`mailto:${profile.email}`}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+          email
+        </a>
+        <a href={profile.linkedin} target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="7.5" cy="7.2" r="0.6" fill="currentColor" stroke="none"/><line x1="7.5" y1="10" x2="7.5" y2="17"/><path d="M11.5 17v-4.2a2.3 2.3 0 0 1 4.6 0V17"/><line x1="11.5" y1="10" x2="11.5" y2="17"/></svg>
+          linkedin
+        </a>
+        <a href={profile.github} target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+          github
+        </a>
       </div>
     </div>
-    <p class="hero-loc">{profile.location}</p>
 
     <div class="intro reveal">
-      <div class="intro-label">Presentación</div>
-      <div class="intro-placeholder">
-        <p>{intro}</p>
+      <img class="intro-photo" src="/profile.png" alt={profile.name} />
+      <div class="intro-text">
+        {intro.map((paragraph) => <p set:html={paragraph} />)}
       </div>
     </div>
   </section>
@@ -84,7 +94,9 @@ const title = `${profile.name} — Analytics Engineer`;
           <div class="job-date">{job.date}</div>
         </div>
         <div class="job-body">
-          {job.paragraphs.map((p) => <p>{p}</p>)}
+          <ul class="job-bullets">
+            {job.paragraphs.map((p) => <li set:html={p} />)}
+          </ul>
 
           {job.chart && (
             <div class="mini-chart">
@@ -132,18 +144,20 @@ const title = `${profile.name} — Analytics Engineer`;
   </section>
 
   <!-- CONTACT -->
-  <section class="contact reveal">
-    <div class="section-head">
-      <span class="section-num mono">04</span>
-      <h2>Contacto</h2>
-    </div>
-    <h2>{contactHeadline}</h2>
-    <div class="contact-links">
-      <a href={`mailto:${profile.email}`}>{profile.email}</a>
-      <a href={profile.linkedin} target="_blank" rel="noopener">linkedin.com/in/svillaverde</a>
-      <a href={profile.github} target="_blank" rel="noopener">github.com/VSantos77</a>
-    </div>
-  </section>
+  {showContact && (
+    <section class="contact reveal">
+      <div class="section-head">
+        <span class="section-num mono">04</span>
+        <h2>Contacto</h2>
+      </div>
+      <h2>{contactHeadline}</h2>
+      <div class="contact-links">
+        <a href={`mailto:${profile.email}`}>{profile.email}</a>
+        <a href={profile.linkedin} target="_blank" rel="noopener">linkedin.com/in/svillaverde</a>
+        <a href={profile.github} target="_blank" rel="noopener">github.com/VSantos77</a>
+      </div>
+    </section>
+  )}
 
   <footer>
     {footerNote}
@@ -181,6 +195,7 @@ const title = `${profile.name} — Analytics Engineer`;
     --line: #E5E7EA;
     --accent: #2B6777;
     --accent-tint: #E9F1F2;
+    --accent-tint-strong: #D2E6E9;
     --accent-warm: #B7791F;
     --accent-warm-tint: #FBF3E4;
     --radius: 10px;
@@ -264,12 +279,19 @@ const title = `${profile.name} — Analytics Engineer`;
     margin-top: 10px;
     font-weight: 500;
   }
+  .role-highlight{
+    color: var(--accent);
+    font-weight: 700;
+  }
   .hero-links{
     display:flex;
     gap: 10px;
     flex-wrap: wrap;
   }
   .hero-links a{
+    display: flex;
+    align-items: center;
+    gap: 7px;
     font-family: 'IBM Plex Mono', monospace;
     font-size: 13px;
     text-decoration: none;
@@ -280,42 +302,51 @@ const title = `${profile.name} — Analytics Engineer`;
     transition: border-color .15s ease, color .15s ease;
     white-space: nowrap;
   }
+  .hero-links a svg{
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
   .hero-links a:hover{
     border-color: var(--accent);
     color: var(--accent);
   }
   .hero-loc{
-    margin-top: 22px;
+    margin-top: 6px;
     color: var(--muted-soft);
     font-size: 14px;
   }
 
-  /* ---------- INTRO (placeholder a completar) ---------- */
+  /* ---------- INTRO ---------- */
   .intro{
     padding: 40px 0 0 0;
     border-top: 1px solid var(--line);
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
   }
-  .intro-label{
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--muted-soft);
-    margin-bottom: 14px;
-  }
-  .intro-placeholder{
-    border: 1px dashed var(--line);
+  .intro-photo{
+    width: 192px;
+    height: 192px;
     border-radius: var(--radius);
-    padding: 22px 24px;
-    background: var(--surface);
+    object-fit: cover;
+    border: 1px solid var(--line);
+    flex-shrink: 0;
   }
-  .intro-placeholder p{
-    margin: 0;
+  .intro-text{
+    border-left: 3px solid var(--accent);
+    padding: 2px 0 2px 24px;
+  }
+  .intro-text p{
+    margin: 0 0 14px 0;
     max-width: 620px;
-    font-size: 16px;
-    line-height: 1.65;
-    color: var(--muted-soft);
-    font-style: italic;
+    font-size: 19px;
+    line-height: 1.6;
+    font-weight: 400;
+    color: var(--ink);
+  }
+  .intro-text p:last-child{
+    margin-bottom: 0;
   }
 
   /* ---------- SECTION HEADERS ---------- */
@@ -391,12 +422,36 @@ const title = `${profile.name} — Analytics Engineer`;
     color: var(--muted-soft);
     margin-top: 8px;
   }
-  .job-body p{
+  .job-bullets{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .job-bullets li{
+    position: relative;
     margin: 0 0 12px 0;
+    padding-left: 16px;
     font-size: 14.5px;
     color: var(--ink);
   }
-  .job-body p:last-child{ margin-bottom: 0; }
+  .job-bullets li:last-child{ margin-bottom: 0; }
+  .job-bullets li::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  :global(mark){
+    background: var(--accent-tint-strong);
+    color: var(--ink);
+    padding: 0 3px;
+    border-radius: 3px;
+    font-weight: inherit;
+  }
 
   /* mini before/after bar chart, dato real */
   .mini-chart{
@@ -442,7 +497,7 @@ const title = `${profile.name} — Analytics Engineer`;
   /* ---------- PROJECTS ---------- */
   .projects-grid{
     display:grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1px;
     background: var(--line);
     border: 1px solid var(--line);
@@ -524,6 +579,7 @@ const title = `${profile.name} — Analytics Engineer`;
     .job{ grid-template-columns: 1fr; gap: 10px; }
     .projects-grid{ grid-template-columns: 1fr; }
     .mini-chart{ flex-wrap: wrap; }
+    .intro{ flex-direction: column; }
   }
 
   :focus-visible{
