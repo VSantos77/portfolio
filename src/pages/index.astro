@@ -1,18 +1,533 @@
 ---
-// Welcome to Astro! Everything between these triple-dash code fences
-// is your "component frontmatter". It never runs in the browser.
-console.log('This runs in your terminal, not the browser!');
+// src/pages/index.astro
+import {
+  profile,
+  intro,
+  skillGroups,
+  experience,
+  projects,
+  contactHeadline,
+  footerNote,
+} from "../data/content.ts";
+
+const title = `${profile.name} — Analytics Engineer`;
 ---
-<!-- Below is your "component template." It's just HTML, but with
-    some magic sprinkled in to help you build great templates. -->
-<html>
-  <body>
-    <h1>Hello, World!</h1>
-  </body>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-top">
+      <div>
+        <span class="eyebrow">{profile.eyebrow}</span>
+        <h1>{profile.name}</h1>
+        <p class="role">{profile.role}</p>
+      </div>
+      <div class="hero-links">
+        <a href={`mailto:${profile.email}`}>email</a>
+        <a href={profile.linkedin} target="_blank" rel="noopener">linkedin</a>
+        <a href={profile.github} target="_blank" rel="noopener">github</a>
+      </div>
+    </div>
+    <p class="hero-loc">{profile.location}</p>
+
+    <div class="intro reveal">
+      <div class="intro-label">Presentación</div>
+      <div class="intro-placeholder">
+        <p>{intro}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="reveal">
+    <div class="section-head">
+      <span class="section-num mono">01</span>
+      <h2>Stack</h2>
+    </div>
+
+    {skillGroups.map((group) => (
+      <div class="skill-group">
+        <div class="skill-group-label">{group.label}</div>
+        <div class="chips">
+          {group.items.map((item) => (
+            <span class={`chip ${group.warm ? "warm" : ""}`}>{item}</span>
+          ))}
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="reveal">
+    <div class="section-head">
+      <span class="section-num mono">02</span>
+      <h2>Experiencia</h2>
+    </div>
+
+    {experience.map((job) => (
+      <div class="job">
+        <div class="job-meta">
+          <div class="job-company">{job.company}</div>
+          <div class="job-role">{job.role}</div>
+          <div class="job-date">{job.date}</div>
+        </div>
+        <div class="job-body">
+          {job.paragraphs.map((p) => <p>{p}</p>)}
+
+          {job.chart && (
+            <div class="mini-chart">
+              <div class="bar-col">
+                <span class="bar-label">{job.chart.before.value}</span>
+                <div class="bar" style={`height: ${job.chart.before.heightPx}px;`}></div>
+                <span class="bar-caption">{job.chart.before.label}</span>
+              </div>
+              <div class="bar-col">
+                <span class="bar-label">{job.chart.after.value}</span>
+                <div class="bar low" style={`height: ${job.chart.after.heightPx}px;`}></div>
+                <span class="bar-caption">{job.chart.after.label}</span>
+              </div>
+              <span class="mini-chart-note">{job.chart.note}</span>
+            </div>
+          )}
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="reveal">
+    <div class="section-head">
+      <span class="section-num mono">03</span>
+      <h2>Proyectos</h2>
+    </div>
+
+    <div class="projects-grid">
+      {projects.map((project) => (
+        <div class="project-card">
+          <div class="project-title">
+            {project.title}
+            {project.link && (
+              <a href={project.link.url} target="_blank" rel="noopener">{project.link.label}</a>
+            )}
+          </div>
+          <p class="project-desc">{project.description}</p>
+          <div class="project-tags">
+            {project.tags.map((tag) => <span class="tag">{tag}</span>)}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact reveal">
+    <div class="section-head">
+      <span class="section-num mono">04</span>
+      <h2>Contacto</h2>
+    </div>
+    <h2>{contactHeadline}</h2>
+    <div class="contact-links">
+      <a href={`mailto:${profile.email}`}>{profile.email}</a>
+      <a href={profile.linkedin} target="_blank" rel="noopener">linkedin.com/in/svillaverde</a>
+      <a href={profile.github} target="_blank" rel="noopener">github.com/VSantos77</a>
+    </div>
+  </section>
+
+  <footer>
+    {footerNote}
+  </footer>
+
+</div>
+
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window){
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting){
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add('in'));
+  }
+</script>
+
+</body>
 </html>
+
 <style>
-  h1 {
-    color: orange;
+  :root{
+    --bg: #FAFAF9;
+    --surface: #FFFFFF;
+    --ink: #1B1F23;
+    --muted: #6B7280;
+    --muted-soft: #9CA3AF;
+    --line: #E5E7EA;
+    --accent: #2B6777;
+    --accent-tint: #E9F1F2;
+    --accent-warm: #B7791F;
+    --accent-warm-tint: #FBF3E4;
+    --radius: 10px;
+    --maxw: 880px;
   }
 
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3{
+    font-family: 'Manrope', sans-serif;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .mono{
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  a{ color: inherit; }
+  .wrap{
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+  section{
+    padding: 72px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  section:last-of-type{ border-bottom: none; }
+
+  .reveal{
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .reveal.in{
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity: 1; transform: none; transition: none; }
+    html{ scroll-behavior: auto; }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding-top: 96px;
+    padding-bottom: 56px;
+  }
+  .hero-top{
+    display:flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .eyebrow{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+    display:block;
+  }
+  .hero h1{
+    font-size: clamp(32px, 5vw, 46px);
+    font-weight: 800;
+    color: var(--ink);
+  }
+  .hero .role{
+    font-size: clamp(16px, 2vw, 19px);
+    color: var(--muted);
+    margin-top: 10px;
+    font-weight: 500;
+  }
+  .hero-links{
+    display:flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .hero-links a{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    text-decoration: none;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 7px 12px;
+    border-radius: 999px;
+    transition: border-color .15s ease, color .15s ease;
+    white-space: nowrap;
+  }
+  .hero-links a:hover{
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .hero-loc{
+    margin-top: 22px;
+    color: var(--muted-soft);
+    font-size: 14px;
+  }
+
+  /* ---------- INTRO (placeholder a completar) ---------- */
+  .intro{
+    padding: 40px 0 0 0;
+    border-top: 1px solid var(--line);
+  }
+  .intro-label{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted-soft);
+    margin-bottom: 14px;
+  }
+  .intro-placeholder{
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    background: var(--surface);
+  }
+  .intro-placeholder p{
+    margin: 0;
+    max-width: 620px;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--muted-soft);
+    font-style: italic;
+  }
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section-head{
+    display:flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .section-num{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--muted-soft);
+  }
+  .section-head h2{
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  /* ---------- SKILLS ---------- */
+  .skill-group{
+    margin-bottom: 22px;
+  }
+  .skill-group:last-child{ margin-bottom: 0; }
+  .skill-group-label{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted-soft);
+    margin-bottom: 10px;
+  }
+  .chips{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chip{
+    font-size: 13.5px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: var(--accent-tint);
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .chip.warm{
+    background: var(--accent-warm-tint);
+    color: var(--accent-warm);
+  }
+
+  /* ---------- EXPERIENCE ---------- */
+  .job{
+    padding: 26px 0;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 24px;
+  }
+  .job:last-child{ padding-bottom: 0; }
+  .job-meta{ padding-top: 2px; }
+  .job-company{
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .job-role{
+    color: var(--muted);
+    font-size: 13.5px;
+    margin-top: 3px;
+  }
+  .job-date{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--muted-soft);
+    margin-top: 8px;
+  }
+  .job-body p{
+    margin: 0 0 12px 0;
+    font-size: 14.5px;
+    color: var(--ink);
+  }
+  .job-body p:last-child{ margin-bottom: 0; }
+
+  /* mini before/after bar chart, dato real */
+  .mini-chart{
+    display:flex;
+    align-items: flex-end;
+    gap: 14px;
+    margin-top: 14px;
+    padding: 14px 16px;
+    background: var(--accent-tint);
+    border-radius: var(--radius);
+  }
+  .bar-col{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .bar{
+    width: 26px;
+    border-radius: 3px 3px 0 0;
+    background: var(--accent);
+  }
+  .bar.low{ background: #7FA9B3; }
+  .bar-label{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .bar-caption{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--muted);
+  }
+  .mini-chart-note{
+    font-size: 12.5px;
+    color: var(--muted);
+    align-self: center;
+    margin-left: 4px;
+    max-width: 220px;
+  }
+
+  /* ---------- PROJECTS ---------- */
+  .projects-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .project-card{
+    background: var(--surface);
+    padding: 26px;
+  }
+  .project-title{
+    font-size: 16px;
+    font-weight: 700;
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+  }
+  .project-title a{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+  }
+  .project-title a:hover{ color: var(--accent); border-color: var(--accent); }
+  .project-desc{
+    font-size: 13.5px;
+    color: var(--muted);
+    margin-top: 10px;
+    line-height: 1.5;
+  }
+  .project-tags{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 14px;
+  }
+  .tag{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+
+  /* ---------- CONTACT / FOOTER ---------- */
+  .contact{
+    text-align: left;
+  }
+  .contact h2{
+    font-size: 26px;
+    font-weight: 800;
+    max-width: 460px;
+  }
+  .contact-links{
+    margin-top: 26px;
+    display:flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .contact-links a{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    text-decoration: none;
+    color: var(--ink);
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--line);
+  }
+  .contact-links a:hover{ color: var(--accent); border-color: var(--accent); }
+  footer{
+    padding: 28px 0 60px 0;
+    font-size: 12.5px;
+    color: var(--muted-soft);
+  }
+
+  @media (max-width: 720px){
+    .job{ grid-template-columns: 1fr; gap: 10px; }
+    .projects-grid{ grid-template-columns: 1fr; }
+    .mini-chart{ flex-wrap: wrap; }
+  }
+
+  :focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
 </style>
