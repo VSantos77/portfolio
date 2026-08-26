@@ -10,6 +10,8 @@ import {
   footerNote,
 } from "../data/content.ts";
 
+import profilePic from "../assets/profile.png";
+
 const title = `${profile.name} — Analytics Engineer`;
 const showContact = false; // apagado por ahora; poné true para volver a mostrar la sección de Contacto
 ---
@@ -53,7 +55,7 @@ const showContact = false; // apagado por ahora; poné true para volver a mostra
     </div>
 
     <div class="intro reveal">
-      <img class="intro-photo" src="/profile.png" alt={profile.name} />
+      <img class="intro-photo" src={profilePic.src} alt={profile.name} />
       <div class="intro-text">
         {intro.map((paragraph) => <p set:html={paragraph} />)}
       </div>
