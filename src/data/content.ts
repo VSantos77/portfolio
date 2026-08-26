@@ -88,7 +88,7 @@ export const experience: Job[] = [
     role: "Data Analyst - Business Intelligence",
     date: "ABR 2022 - ABR 2023",
     paragraphs: [
-      "Construí desde cero un pipeline en Python + Scrapy que convierte datos crudos en indicadores comerciales accionables (IMA/IOC), presentados en reportes interactivos en Power BI; reemplazó la necesidad de un proveedor externo <mark>resultando en un ahorro de ~$50k USD/año</mark>",
+      "Construí desde cero un pipeline en Python + Scrapy que convierte datos crudos en indicadores comerciales accionables (IMA/IOC), presentados en un <a href='https://app.powerbi.com/view?r=eyJrIjoiNjRiNmFmMjMtM2IxZC00OTc4LTgxMjYtM2NmYjAyNTliNjRkIiwidCI6IjM2MGNjNjBjLTVhZTgtNDFjMi05MmZiLTcyNDIyODU0YWRkYSIsImMiOjR9&pageName=ReportSection868e66edec67e556ec1d'> reporte interactivo en Power BI </a>; reemplazó la necesidad de un proveedor externo <mark>resultando en un ahorro de ~$50k USD/año</mark>",
     ],
   },
 ];
