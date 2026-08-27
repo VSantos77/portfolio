@@ -1,7 +1,9 @@
-// src/data/content.ts
-// Todo el texto del sitio vive acá. Editá este archivo sin tocar index.astro.
+// src/data/content.es.ts
+// Todo el texto del sitio (versión en español) vive acá. Editá este archivo sin tocar Portfolio.astro.
 
-export const profile = {
+import type { Profile, SkillGroup, Job, Project, UiStrings } from "./types";
+
+export const profile: Profile = {
   name: "Santiago Villaverde",
   eyebrow: "",
   roleHighlight: "Analytics Engineer",
@@ -17,14 +19,8 @@ export const profile = {
 export const intro = [
   "Hola!",
   "Me llamo Santi. Hace más de 5 años que construyo los <mark>pipelines y dashboards que potencian decisiones de negocio</mark>. Me apasiona tomar un problema ambiguo y convertirlo en un modelo de datos confiable.",
-  "Hoy en día busco roles de Analytics / Data Engineer donde poder <mark>contribuir a construir arquitecturas de datos con impacto.</mark>"
+  "Hoy en día busco roles de Analytics / Data Engineer donde poder <mark>contribuir a construir arquitecturas de datos con impacto.</mark>",
 ];
-
-export type SkillGroup = {
-  label: string;
-  items: string[];
-  warm?: boolean; // true = usa el chip color ámbar (lo usamos para Idiomas)
-};
 
 export const skillGroups: SkillGroup[] = [
   {
@@ -41,7 +37,7 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     label: "Versionado y CI/CD",
-    items: ["Git", "Github Actions"]
+    items: ["Git", "Github Actions"],
   },
   {
     label: "Idiomas",
@@ -49,20 +45,6 @@ export const skillGroups: SkillGroup[] = [
     warm: true,
   },
 ];
-
-export type MiniChart = {
-  before: { value: string; label: string; heightPx: number };
-  after: { value: string; label: string; heightPx: number };
-  note: string;
-};
-
-export type Job = {
-  company: string;
-  role: string;
-  date: string;
-  paragraphs: string[]; // cada string es un bullet; envolvé texto en <mark>...</mark> para resaltarlo en color accent
-  chart?: MiniChart; // opcional: para destacar un dato antes/después
-};
 
 export const experience: Job[] = [
   {
@@ -93,13 +75,6 @@ export const experience: Job[] = [
   },
 ];
 
-export type Project = {
-  title: string;
-  description: string;
-  tags: string[];
-  link?: { label: string; url: string };
-};
-
 export const projects: Project[] = [
   {
     title: "Catalogo de Descuentos",
@@ -107,8 +82,14 @@ export const projects: Project[] = [
       "Pipeline ELT propio (Scrapy → GCS → BigQuery → dbt) con arquitectura medallion, que consolida descuentos de bancos y programas de membresía en Argentina para encontrar el mejor por comercio y período.",
     tags: ["dbt", "BigQuery", "Terraform", "Cloud Run"],
     link: { label: "github ↗", url: "https://github.com/VSantos77/discount-tracker" },
-  }
+  },
 ];
 
 export const contactHeadline = "¿Hablamos de tu próximo proyecto de datos?";
 export const footerNote = "Buenos Aires, Argentina · Última actualización agosto 2026";
+
+export const ui: UiStrings = {
+  sectionExperience: "Experiencia",
+  sectionProjects: "Proyectos",
+  sectionContact: "Contacto",
+};

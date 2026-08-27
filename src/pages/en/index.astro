@@ -1,7 +1,7 @@
 ---
-// src/pages/index.astro — versión en español (idioma por defecto, sin prefijo de ruta)
+// src/pages/en/index.astro — English version (served under /en/)
 import { getRelativeLocaleUrl } from "astro:i18n";
-import Portfolio from "../components/Portfolio.astro";
+import Portfolio from "../../components/Portfolio.astro";
 import {
   profile,
   intro,
@@ -11,12 +11,12 @@ import {
   contactHeadline,
   footerNote,
   ui,
-} from "../data/content.es.ts";
+} from "../../data/content.en.ts";
 
-const altHref = getRelativeLocaleUrl("en", "/");
+const altHref = getRelativeLocaleUrl("es", "/");
 ---
 <Portfolio
-  lang="es"
+  lang="en"
   altHref={altHref}
   profile={profile}
   intro={intro}
